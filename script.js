@@ -225,3 +225,186 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Gallery functionality
+class Gallery {
+    constructor() {
+        this.images = [];
+        this.currentImageIndex = 0;
+        this.imagesPerLoad = 6;
+        this.totalLoaded = 0;
+        this.init();
+    }
+
+    async init() {
+        await this.loadImages();
+        this.setupEventListeners();
+        this.renderImages();
+    }
+
+    async loadImages() {
+        // Lista de imagens que devem estar na pasta images/print3d/
+        const imageNames = [
+            'image1.jpeg',
+            'image2.JPG', 
+            'image3.JPG',
+            'image4.JPG',
+            'image5.JPG',
+            'image6.JPG',
+            'image7.JPG',
+            'image8.jpeg',
+            'image9.jpeg',
+            'image10.jpeg',
+            'image11.jpeg',
+            'image12.jpeg'
+            // Adicione mais nomes conforme necessário
+        ];
+
+        // Verificar quais imagens existem
+        for (const imageName of imageNames) {
+            const imagePath = `images/print3d/${imageName}`;
+            if (await this.imageExists(imagePath)) {
+                this.images.push({
+                    src: imagePath,
+                    alt: `Impressão 3D AMLDETS - ${imageName.replace(/\.[^/.]+$/, "")}`
+                });
+            }
+        }
+
+        console.log(`${this.images.length} imagens encontradas na galeria`);
+    }
+
+    imageExists(src) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = src;
+        });
+    }
+
+    renderImages() {
+        const galleryGrid = document.getElementById('galleryGrid');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        
+        if (this.images.length === 0) {
+            galleryGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                    <p>Em breve adicionaremos fotos dos nossos trabalhos!</p>
+                </div>
+            `;
+            loadMoreBtn.style.display = 'none';
+            return;
+        }
+
+        const imagesToShow = this.images.slice(this.totalLoaded, this.totalLoaded + this.imagesPerLoad);
+        
+        imagesToShow.forEach((image, index) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `
+                <img src="${image.src}" alt="${image.alt}" loading="lazy">
+                <div class="gallery-overlay">
+                    <span class="gallery-overlay-icon">🔍</span>
+                </div>
+            `;
+            
+            galleryItem.addEventListener('click', () => {
+                this.openModal(this.totalLoaded + index);
+            });
+            
+            galleryGrid.appendChild(galleryItem);
+        });
+
+        this.totalLoaded += imagesToShow.length;
+
+        // Esconder botão se não há mais imagens
+        if (this.totalLoaded >= this.images.length) {
+            loadMoreBtn.style.display = 'none';
+        }
+    }
+
+    setupEventListeners() {
+        // Load more button
+        document.getElementById('loadMoreBtn').addEventListener('click', () => {
+            this.renderImages();
+        });
+
+        // Modal events
+        const modal = document.getElementById('galleryModal');
+        const closeBtn = document.querySelector('.gallery-close');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        closeBtn.addEventListener('click', () => this.closeModal());
+        prevBtn.addEventListener('click', () => this.previousImage());
+        nextBtn.addEventListener('click', () => this.nextImage());
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === 'block') {
+                switch(e.key) {
+                    case 'Escape':
+                        this.closeModal();
+                        break;
+                    case 'ArrowLeft':
+                        this.previousImage();
+                        break;
+                    case 'ArrowRight':
+                        this.nextImage();
+                        break;
+                }
+            }
+        });
+
+        // Close on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.closeModal();
+            }
+        });
+    }
+
+    openModal(imageIndex) {
+        this.currentImageIndex = imageIndex;
+        const modal = document.getElementById('galleryModal');
+        const modalImage = document.getElementById('modalImage');
+        const imageCounter = document.getElementById('imageCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        modalImage.src = this.images[imageIndex].src;
+        modalImage.alt = this.images[imageIndex].alt;
+        imageCounter.textContent = `${imageIndex + 1} / ${this.images.length}`;
+
+        // Navigation buttons state
+        prevBtn.disabled = imageIndex === 0;
+        nextBtn.disabled = imageIndex === this.images.length - 1;
+
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeModal() {
+        const modal = document.getElementById('galleryModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    previousImage() {
+        if (this.currentImageIndex > 0) {
+            this.openModal(this.currentImageIndex - 1);
+        }
+    }
+
+    nextImage() {
+        if (this.currentImageIndex < this.images.length - 1) {
+            this.openModal(this.currentImageIndex + 1);
+        }
+    }
+}
+
+// Initialize gallery when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new Gallery();
+});
