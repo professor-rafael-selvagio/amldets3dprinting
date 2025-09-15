@@ -190,3 +190,38 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 console.log('🚀 Amldets 3D Printing - Site carregado com sucesso!');
+
+// Modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('modalOrcamento');
+    const ctaButton = document.querySelector('.cta-button');
+    const closeBtn = document.querySelector('.close');
+
+    // Abrir modal
+    ctaButton.addEventListener('click', function() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Impede scroll da página
+    });
+
+    // Fechar modal
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restaura scroll da página
+    });
+
+    // Fechar modal clicando fora
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Fechar modal com ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+});
