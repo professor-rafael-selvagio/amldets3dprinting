@@ -1,1 +1,112 @@
-teste
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amldets 3D Printing - Impressão 3D Personalizada</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">Amldets 3D</h1>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#cep">Consulta CEP</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Seção Hero -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h2>Impressão 3D de Alta Qualidade</h2>
+                <p>Transformamos suas ideias em realidade com tecnologia de ponta em impressão 3D</p>
+                <button class="cta-button">Solicite um Orçamento</button>
+            </div>
+            <div class="hero-image">
+                <div class="printer-3d">🖨️</div>
+            </div>
+        </section>
+
+        <!-- Seção Serviços -->
+        <section id="servicos" class="services">
+            <h2>Nossos Serviços</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Prototipagem</h3>
+                    <p>Criamos protótipos funcionais para validar suas ideias antes da produção</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏠</div>
+                    <h3>Objetos Personalizados</h3>
+                    <p>Peças únicas para decoração, presentes e necessidades específicas</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Peças Industriais</h3>
+                    <p>Componentes técnicos com precisão milimétrica para sua empresa</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Consulta CEP -->
+        <section id="cep" class="cep-section">
+            <h2>Consulta de CEP para Entrega</h2>
+            <p>Digite seu CEP para verificarmos a viabilidade de entrega</p>
+            
+            <div class="cep-container">
+                <div class="cep-input-group">
+                    <input 
+                        type="text" 
+                        id="cepInput" 
+                        placeholder="Digite seu CEP (ex: 01234567)"
+                        maxlength="8"
+                    >
+                    <button id="consultarBtn" onclick="consultarCEP()">
+                        Consultar CEP
+                    </button>
+                </div>
+                
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Consultando CEP...</p>
+                </div>
+                
+                <div id="resultado" class="resultado hidden"></div>
+            </div>
+        </section>
+
+        <!-- Seção Contato -->
+        <section id="contato" class="contact">
+            <h2>Entre em Contato</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <p>contato@amldets3d.com</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <p>(11) 99999-9999</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <p>São Paulo, SP</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Amldets 3D Printing. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
